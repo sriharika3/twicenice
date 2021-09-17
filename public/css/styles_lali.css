@@ -1,0 +1,84 @@
+body {
+  font-family: "Montserrat", sans-serif;
+}
+#nav-bar {
+  width: 100%;
+  background-color: #ffc0cb;
+  padding: 10px 15px 20px;
+}
+
+
+
+.deals-img {
+  width: 100%;
+  /* height: 300px; */
+}
+
+#category {
+  padding: 7% 2%;
+
+  background-color: #CAF7E3;
+}
+
+#topcontrol {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  opacity: 1;
+  cursor: pointer;
+  z-index: 1;
+}
+.scroll-btn {
+  background-color: #f08080;
+  border-color: transparent;
+  border-radius: 250px;
+}
+.scroll-btn:hover {
+  background-color: #cd5c5c;
+}
+
+#sellbook {
+  padding: 5% 7%;
+  text-align: center;
+  background-image: -webkit-linear-gradient(75deg, #A683E3 50%, #E4E9FD 50%);
+}
+
+.selling-head{
+  padding-bottom: 50px;
+  color: #4682b4;
+  font-weight: bold;
+}
+
+
+.sellbook-img {
+height: 200px;
+width: 200px;
+border-radius: 200px;
+}
+.more-btn {
+  margin-top: 10px;
+}
+#cta {
+  padding: 7% 15%;
+  text-align: center;
+  background-color: #ffc0cb;
+}
+
+.cta-text {
+  padding-bottom: 50px;
+  font-weight: bold;
+  font-size: 3.5rem;
+  line-height: 1.5;
+}
+.download-btn {
+  margin: 3% 3% 3% 0;
+}
+
+#footer {
+  text-align: center;
+  padding:7% 15% 3% 15%;
+  background-color: #ffc0cb;
+}
+.social-icon {
+  margin: 20px 10px;
+}
