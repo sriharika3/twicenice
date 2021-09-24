@@ -7,7 +7,8 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
-
+var token;
+var userLogged = false;
 mongoose.connect('mongodb://localhost:27017/login-app-db', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -24,7 +25,20 @@ app.use(bodyParser.json())
 
 
 app.get("/",function(req,res){
-  res.sendFile(__dirname+"/index.html");
+	if(userLogged == false){
+	//if(typeof token === 'undefined' && token) {
+   // do something with token
+   // this will only work if the token is set in the localStorage
+	 res.sendFile(__dirname+"/index.html");
+ }else{
+	res.sendFile(__dirname+"/logged_home.html");
+}
+});
+
+app.get("/logout",function(req,res){
+	userLogged=false;
+	console.log("Logged out!!");
+	res.redirect("/");
 });
 
 app.get("/categories/:topic", function(req,res){
@@ -46,13 +60,14 @@ app.post('/api/login', async (req, res) => {
 	if (await bcrypt.compare(password, user.password)) {
 		// the username, password combination is successful
 
-		const token = jwt.sign(
+		token = jwt.sign(
 			{
 				id: user._id,
 				username: user.username
 			},
 			JWT_SECRET
 		)
+		userLogged = true;
 
 		return res.json({ status: 'ok', data: token })
 	}
@@ -98,6 +113,8 @@ app.post('/api/register', async (req, res) => {
 
 	res.json({ status: 'ok' })
 });
+
+
 
 
 

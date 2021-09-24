@@ -32,7 +32,7 @@
   <section id="nav-bar">
     <div class="title">
       <h1 class="brand-title">Twice<span class="title-span">but</span>Nice</h1>
-      <p class="brand-decs">This is a web site designed by the great sri harika and lalitha sri containing amazing second hand books.</p>
+      <p class="brand-decs">One stop destinatiion to buy and sell second-hand books.</p>
     </div>
 
     <hr />
@@ -58,83 +58,19 @@
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
 
             <!-- Modal Triggering buttons -->
-            <button type="button" class="btn btn-link log-button" data-toggle="modal" data-target="#exampleModalCenterLogin">
+            <!-- <button type="button" class="btn btn-link log-button" data-toggle="modal" data-target="#exampleModalCenterLogin">
               Login
             </button>
             <button type="button" class="btn btn-link log-button" data-toggle="modal" data-target="#exampleModalCenterRegister">
               Register
-            </button>
+            </button> -->
 
           </form>
-          <!-- <a href="#"><i class="fab fa-opencart fa-3x cart-icon"></i></a>
-          <a href="#"><i class="far fa-heart fa-3x cart-icon"></i></a> -->
+          <a href="#"><i class="fab fa-opencart fa-3x cart-icon"></i></a>
+          <a href="#"><i class="far fa-heart fa-3x cart-icon"></i></a>
+          <button onclick="logout()"><i class="fas fa-power-off fa-3x cart-icon"></i></button>
         </div>
 
-    <!-- Modal -->
-<div class="modal fade" id="exampleModalCenterLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="log-form">
-          <div class="form-group">
-            <input type="email" class="form-control" name="username" id="usernameL" placeholder="Your email address...">
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control" name="password" id="passwordL" placeholder="Your password...">
-          </div>
-          <!-- <button type="button" class="btn btn-info btn-block btn-round">Login</button> -->
-          <div class="modal-footer">
-            <!-- <p>Not a member yet? then,<button class="btn btn-link" data-target="#exampleModalCenterRegister">Register youself here.</button></p> -->
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" onclick="login()" class="btn btn-info">Login</button>
-          </div>
-        </form>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="exampleModalCenterRegister" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Register</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id = "reg-form">
-          <div class="form-group">
-            <input type="Name" class="form-control" id="name" name="name" placeholder="Your Name">
-          </div>
-          <div class="form-group">
-            <input type="email" class="form-control" id="username" name="username" placeholder="Your email address...">
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Your password...">
-          </div>
-          <!-- <div class="form-group">
-            <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm Your password...">
-          </div> -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <input type="button" onclick="register()" class="btn btn-info" value="Register" />
-          </div>
-          <!-- <button type="button" class="btn btn-info btn-block btn-round">Register</button> -->
-        </form>
-      </div>
-
-    </div>
-  </div>
-</div>
 
       </nav>
     </div>
@@ -202,7 +138,7 @@
             <p class="card-desc">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <a type="button" class="btn btn-outline-light" href="/categories" name="Medical">Browse</a>
+            <a type="button" class="btn btn-outline-light" href="/categories/medical" name="Medical">Browse</a>
           </div>
         </div>
       </div>
@@ -237,7 +173,7 @@
             <p class="card-desc">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <button type="button" class="btn btn-outline-light" name="Arts">Browse</button>
+            <a type="submit" class="btn btn-outline-light" name="Arts" href="/categories/arts">Browse</a>
           </div>
         </div>
       </div>
@@ -255,7 +191,7 @@
             <p class="card-desc">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <button type="button" class="btn btn-outline-light" name="Comics">Browse</button>
+            <a type="submit" class="btn btn-outline-light" name="Comics" href="/categories/comics">Browse</a>
           </div>
         </div>
       </div>
@@ -272,7 +208,7 @@
             <p class="card-desc">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <button type="button" class="btn btn-outline-light" name="Psychology">Browse</button>
+            <a type="submit" class="btn btn-outline-light" name="Psychology" href="/categories/psychology">Browse</a>
           </div>
         </div>
       </div>
@@ -289,7 +225,7 @@
             <p class="card-desc">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <button type="button" class="btn btn-outline-light" name="Biography">Browse</button>
+            <a type="submit" class="btn btn-outline-light" name="Biography" href="/categories/biography">Browse</a>
           </div>
         </div>
       </div>
@@ -306,7 +242,7 @@
             <p class="card-desc">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <button type="button" class="btn btn-outline-light" name="Mythology">Browse</button>
+            <a type="submit" class="btn btn-outline-light" name="Mythology" href="/categories/mythology">Browse</a>
           </div>
         </div>
       </div>
@@ -323,7 +259,7 @@
             <p class="card-desc">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <button type="button" class="btn btn-outline-light" name="Fiction">Browse</button>
+            <a type="submit" class="btn btn-outline-light" name="Fiction" href="/categories/fiction">Browse</a>
           </div>
         </div>
       </div>
@@ -340,7 +276,7 @@
               <p class="card-desc">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
-              <button type="button" class="btn btn-outline-light" name="Children" >Browse</button>
+              <a type="submit" class="btn btn-outline-light" name="Children" href="/categories/children">Browse</a>
             </div>
           </div>
         </div>
@@ -366,7 +302,7 @@
       <div class="sellbook-box col-lg-4 col-md-12 col-sm-12">
         <img src="images/piggybank.png" class="sellbook-img" alt="piggybank-img">
         <h3 class="sellbook-heading">Get paid.</h3>
-        <p>Earn loyalty points and turn then into cah.</p>
+        <p>Earn loyalty points and turn then into cash.</p>
       </div>
       <div class="sellbook-box col-lg-4 col-md-12 col-sm-12">
         <img src="images/pricelock.jpg" class="sellbook-img" alt="pricelock-img">
@@ -379,7 +315,7 @@
         <p>Sell books of any genre.</p>
       </div>
     </div>
-    <button type="button" href="#" class="btn btn-info more-btn">Know More</button>
+    <a type="button" href="/sellpage" class="btn btn-info more-btn">Know More</a>
   </section>
 
   <!-- Call to Action -->
@@ -433,72 +369,12 @@
   </section>
 
   <script>
-    function register() {
-      alert("Register initiated");
-      const form = document.getElementById('reg-form')
-			form.addEventListener('submit', registerUser(event))
-    };
-			async function registerUser(event) {
-				event.preventDefault()
-        alert("Hello");
-				const username = document.getElementById('username').value
-				const password = document.getElementById('password').value
-        const name = document.getElementById('name').value
+    function logout(){
 
-				const result = await fetch('/api/register', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-            name,
-						username,
-						password
-					})
-				}).then((res) => res.json())
-
-				if (result.status === 'ok') {
-					// everythign went fine
-					alert('Success')
-				} else {
-					alert(result.error)
-				}
-			}
-
-      function login(){
-        alert("login Initiated");
-        const form = document.getElementById('log-form')
-			form.addEventListener('submit', loginUser(event));
-    }
-
-			async function loginUser(event) {
-				event.preventDefault()
-				const username = document.getElementById('usernameL').value
-				const password = document.getElementById('passwordL').value
-
-				const result = await fetch('/api/login', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						username,
-						password
-					})
-				}).then((res) => res.json())
-
-				if (result.status === 'ok') {
-					// everythign went fine
-					console.log('Got the token: ', result.data)
-					localStorage.setItem('token', result.data)
-					alert('Success')
-          window.location = "http://localhost:3000";
-				} else {
-					alert(result.error)
-				}
-			}
-
-  </script>
+      localStorage.clear();
+      window.location = "http://localhost:3000/logout";
+  }
+</script>
 
 </body>
 
