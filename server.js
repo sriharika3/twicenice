@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 const User = require('./model/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const fs = require('fs');
+const bookModel = require('./model/book');
 
 const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
 var token;
@@ -33,6 +35,70 @@ app.get("/",function(req,res){
  }else{
 	res.sendFile(__dirname+"/logged_home.html");
 }
+});
+
+app.get("/sellpage",function(req,res){
+	if(userLogged == false){
+	//if(typeof token === 'undefined' && token) {
+   // do something with token
+   // this will only work if the token is set in the localStorage
+	 res.sendFile(__dirname+"/index.html");
+ }else{
+	res.sendFile(__dirname+"/sellpage.html");
+}
+});
+
+var multer = require('multer');
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+
+var upload = multer({ storage: storage });
+
+app.get('/uploadBook', (req, res) => {
+    bookModel.find({}, (err, items) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('An error occurred', err);
+        }
+        else {
+            res.render('imagesPage', { items: items });
+        }
+    });
+});
+
+app.post('/uploadBook', upload.single('image'), (req, res, next) => {
+
+    var obj = {
+			isbn: req.body.isbn,
+			title: req.body.title,
+			author: req.body.author,
+			mrp: req.body.mrp,
+			category: req.body.category,
+			phone: req.body.phone,
+			email: req.body.email,
+			status: false,
+			//sellerId: String,
+        img: {
+            data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+            contentType: 'image/png'
+        }
+    }
+    bookModel.create(obj, (err, item) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+             item.save();
+            res.redirect('/');
+        }
+    });
 });
 
 app.get("/logout",function(req,res){
