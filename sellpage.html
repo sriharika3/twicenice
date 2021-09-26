@@ -105,23 +105,26 @@
             <input type="text" class="form-control" name="email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
           </div>
 
-        </div>
-        <div class="btn-group dropright">
-          <button class="btn btn-secondary dropdown-toggle" name="category" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Select Genre/category
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item" type="button">Medical</button>
-            <button class="dropdown-item" type="button">Engineering</button>
-            <button class="dropdown-item" type="button">Arts</button>
-            <button class="dropdown-item" type="button">Comic</button>
-            <button class="dropdown-item" type="button">Psychology</button>
-            <button class="dropdown-item" type="button">Biography</button>
-            <button class="dropdown-item" type="button">Mythology</button>
-            <button class="dropdown-item" type="button">Fiction</button>
-            <button class="dropdown-item" type="button">Children</button>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Genre/Category</span>
+            </div>
+            <!-- <label for="Genre">Genre/Category:</label> -->
+            <select class="form-control" name="category" id="Genre">
+              <option>Medical</option>
+              <option>Engineering</option>
+              <option>Arts</option>
+              <option>Comic</option>
+              <option>Psychology</option>
+              <option>Biography</option>
+              <option>Mythology</option>
+              <option>Fiction</option>
+              <option>Children</option>
+            </select>
           </div>
+
         </div>
+
         <br>
         <br>
         <h5>Upload book images</h5>

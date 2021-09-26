@@ -74,7 +74,11 @@ app.get('/uploadBook', (req, res) => {
 });
 
 app.post('/uploadBook', upload.single('image'), (req, res, next) => {
-
+	const user = jwt.verify(token, JWT_SECRET)
+	const _id = user.id
+	const username = user.username
+	console.log("username loggedin = "+ username);
+	console.log(req.body);
     var obj = {
 			isbn: req.body.isbn,
 			title: req.body.title,
@@ -84,7 +88,7 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
 			phone: req.body.phone,
 			email: req.body.email,
 			status: false,
-			//sellerId: String,
+			sellerId: username,
         img: {
             data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
             contentType: 'image/png'

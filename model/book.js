@@ -9,7 +9,7 @@ var bookSchema = new mongoose.Schema({
     phone: String,
     email: String,
     status: Boolean,
-    //sellerId: String,
+    sellerId: String,
     img:
     {
         data: Buffer,
