@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Collections</title>
+  <title>Sell requests</title>
   <!-- Bootstrap Stylesheets -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- css links -->
-  <link rel="stylesheet" href="../css/styles-admin.css">
+  <link rel="stylesheet" href="css/styles-admin.css">
   <!-- Bootstrap Scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -26,9 +26,9 @@
 <body>
 
 
-  <h1>TwiceNice</h1>
+  <h1>TwiceNice Admin</h1>
   <hr>
-  <h2><%=catSelected%></h2>
+  <h2>Requests awaiting approval...</h2>
   <form action="/adminconfirm" method="post">
     <% var i=0 %>
   <% items.forEach(function(image) {  %>

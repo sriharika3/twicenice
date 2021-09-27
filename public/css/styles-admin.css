@@ -1,0 +1,46 @@
+body {
+  /* font-family: "Montserrat", sans-serif; */
+  /* background-color: #A683E3; */
+  background-color: #DEFCF9;
+  margin: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1{
+  text-align: center;
+  color: #1E56A0;
+  margin-top: 2%;
+}
+
+h2 {
+padding: 1% 5%;
+color: #A683E3;
+}
+
+.flex-container {
+    display: flex;
+    padding: 3% 5%;
+
+}
+
+.flex-child {
+    flex: 1;
+    border: 2px solid yellow;
+
+}
+
+.req-img {
+  height: 100%;
+  width: 100%;
+}
+
+.desc{
+  padding-left: 5%;
+}
+
+.ac{
+  color:green;
+}
+.wa{
+  color:red;
+}

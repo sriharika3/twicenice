@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Collections</title>
+  <title>Sell requests</title>
   <!-- Bootstrap Stylesheets -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- css links -->
-  <link rel="stylesheet" href="../css/styles-admin.css">
+  <link rel="stylesheet" href="css/styles-admin.css">
   <!-- Bootstrap Scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -26,10 +26,9 @@
 <body>
 
 
-  <h1>TwiceNice</h1>
+  <h1>TwiceNice Seller</h1>
   <hr>
-  <h2><%=catSelected%></h2>
-  <form action="/adminconfirm" method="post">
+  <h2>Status of Books you Uploaded</h2>
     <% var i=0 %>
   <% items.forEach(function(image) {  %>
 
@@ -49,16 +48,32 @@
     <p>Category:<%= image.category %></p>
     <h4>Status</h4>
     <input type="hidden" name="isbn<%=i%>" value=<%=image.isbn%> />
-    <input type="radio" name="ans<%=i%>" value=1 />
-    <label>Accept</label><br>
-    <input type="radio" name="ans<%=i%>" value=0 />
-    <label>Reject</label><br>
+    <%if(image.status === "true" ){ %>
+      <% if(image.sold === false){ %>
+      <h1 class="ac">Accepted!! </h1>
+      <h3>Congrats! your book is listed in our collections. Look out for orders from our active buyers</h3>
+      <form action="/sold" method="post">
+        <input type="hidden" name="isbn" value= <%=image.isbn%> />
+        <input type="submit" name="button" value="Mark Sold"/>
+      </form>
+  <%  }else{ %>
+    <h1 class="ac">Sold!!</h1>
+    <h3>Hope you had a good experience with us.</h3>
+
+  <% } %>
+  <%  }else if(image.status === "reject"){ %>
+      <h1 class="wa">Rejected!! </h1>
+      <h3>Your Book probably has wrong information, you haven't uploaded a very clear image or your book might be not suitable for reuse</h3>
+  <%  }else{%>
+    <h1 class="wa">Waiting for approval.. </h1>
+    <h3>Please be patient while our team reviews your request.</h3>
+
+<%  } %>
+
   </div>
     <% i= i+1 %>
 </div>
 <% }) %>
-<button type="submit" name="button" value=<%=i%> >Submit</button>
-</form>
   <!-- <form action="/adminconfirm" method="POST">
 
 </form> -->

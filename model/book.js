@@ -8,7 +8,8 @@ var bookSchema = new mongoose.Schema({
     category: String,
     phone: String,
     email: String,
-    status: Boolean,
+    status: String,
+    sold: Boolean,
     sellerId: String,
     img:
     {

@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/login-app-db', {
 
 const app = express()
 app.set('view engine', 'ejs');
-// app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(express.static(__dirname + '/views'));
 //app.use(express.static(__dirname + '/public'));
@@ -62,15 +62,109 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 app.get('/uploadBook', (req, res) => {
-    bookModel.find({}, (err, items) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('An error occurred', err);
-        }
-        else {
-            res.render('imagesPage', { items: items });
-        }
-    });
+	bookModel.find({}, (err, items) => {
+			if (err) {
+					console.log(err);
+					res.status(500).send('An error occurred', err);
+			}
+			else {
+					res.render('imagesPage', { items: items });
+			}
+	});
+});
+
+app.get('/admin', function(req, res){
+	bookModel.find({status:"false" }, (err, items) => {
+			if (err) {
+					console.log(err);
+					res.status(500).send('An error occurred', err);
+			}
+			else {
+					res.render('admin', { items: items });
+			}
+	});
+	//res.render("admin");
+});
+
+app.get('/upload-status', function(req, res){
+	const user = jwt.verify(token, JWT_SECRET)
+	const _id = user.id
+	const username = user.username
+
+	bookModel.find({sellerId:username}, (err, items) => {
+			if (err) {
+					console.log(err);
+					res.status(500).send('An error occurred', err);
+			}
+			else {
+					res.render('sellerStatus', { items: items });
+			}
+	});
+	//res.render("admin");
+});
+
+app.post('/adminconfirm', function(req,res){
+	console.log(req.body.button);
+	const len = Number(req.body.button);
+	const options = req.body;
+	for(var i=0;i<len;i++){
+		var op = "ans"+(i);
+		var isbn = "isbn"+(i);
+		console.log(options[isbn]+"  "+options[op]);
+		if(options[op] == 1){
+			var update = { $set: {status: "true"} };
+			bookModel.updateOne({isbn:options[isbn]}, update, (err,items)=>{
+				if(err){
+					console.log(err);
+					res.status(500).send("An error occurred",err);
+				}else{
+					if(items){
+						console.log("Updated");
+					}
+					}
+				});
+		}else{
+			var update = { $set: {status: "reject"} };
+			bookModel.updateOne({isbn:options[isbn]}, update, (err,items)=>{
+				if(err){
+					console.log(err);
+					res.status(500).send("An error occurred",err);
+				}else{
+					if(items){
+						console.log("Rejected");
+					}
+
+					}
+				});
+		}
+	}
+	bookModel.find({status:"true", sold:"false"}, (err, items) => {
+			if (err) {
+					console.log(err);
+					res.status(500).send('An error occurred', err);
+			}
+			else {
+					res.render('admin', { items: items });
+			}
+	});
+	//res.send(req.body);
+});
+
+app.post('/sold', function(req,res){
+	console.log(req.body.isbn);
+	var update = { $set: {sold: "true"} };
+	bookModel.updateOne({isbn:req.body.isbn}, update, (err,items)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send("An error occurred",err);
+		}else{
+			if(items){
+				console.log("Sold Updated");
+			}else{
+				console.log("Item not found!");
+			}
+			}
+		});
 });
 
 app.post('/uploadBook', upload.single('image'), (req, res, next) => {
@@ -87,7 +181,8 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
 			category: req.body.category,
 			phone: req.body.phone,
 			email: req.body.email,
-			status: false,
+			status: "false",
+			sold: false,
 			sellerId: username,
         img: {
             data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
@@ -100,10 +195,12 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
         }
         else {
              item.save();
-            res.redirect('/');
+            res.redirect('/sellpage');
         }
     });
 });
+
+
 
 app.get("/logout",function(req,res){
 	userLogged=false;
@@ -113,9 +210,15 @@ app.get("/logout",function(req,res){
 
 app.get("/categories/:topic", function(req,res){
   let cat = req.params.topic;
-
-  res.render("categories", {catSelected: cat});
-
+	bookModel.find({status:"true", category:cat, sold: false}, (err, items) => {
+			if (err) {
+					console.log(err);
+					res.status(500).send('An error occurred', err);
+			}
+			else {
+					res.render("categories", {catSelected: cat, items:items});
+			}
+	});
 });
 
 
