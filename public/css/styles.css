@@ -24,7 +24,10 @@ body{
 }
 
 .nav-link{
-  font-weight: 400;
+  font-weight: bold;
+}
+.nav-item{
+  padding-left: 20px;
 }
 .log-button{
   color:#4682b4;

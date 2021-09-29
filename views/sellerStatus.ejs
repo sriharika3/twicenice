@@ -79,5 +79,43 @@
 </form> -->
 
 </body>
+<script type="text/javascript">
+function wishlist(){
+const form = document.getElementById('book')
+form.addEventListener('submit', addToList(event));
+}
+
+async function addToList(event) {
+  event.preventDefault()
+  const isbn = document.getElementById('isbn').value
+  const seller = document.getElementById('seller').value
+  // const userId = document.getElementById('user').value
+
+  const result = await fetch('/api/wishlist', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      isbn,
+      seller,
+      // userId
+    })
+  }).then((res) => res.json())
+
+  if (result.status === 'ok') {
+    // everythign went fine
+    alert('Added books to wishlist')
+    $("#wish").removeClass("btn btn-info").addClass("btn btn-success");
+    $("#wish").text( 'Added');
+  } else if(result.status === 'notlogged'){
+    alert(result.error);
+    window.location = "http://localhost:3000/";
+  }else{
+    alert(result.error);
+  }
+}
+
+</script>
 
 </html>

@@ -1,0 +1,102 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  /* background-color: #A683E3; */
+  background-color: #DEFCF9;
+  margin: 0;
+  /* font-family: 'Source Sans Pro', sans-serif; */
+}
+
+h1{
+  text-align: center;
+  color: #1E56A0;
+  margin-top: 2%;
+}
+
+h2 {
+padding: 1% 5%;
+color: #A683E3;
+}
+
+p{
+  margin-bottom: 5px;
+}
+
+.flex-container {
+    display: flex;
+    padding: 3% 5%;
+
+}
+
+.flex-child {
+    flex: 1;
+    border: 2px solid yellow;
+
+}
+
+.req-img {
+  height: 100%;
+  width: 100%;
+}
+
+.content{
+  /* padding-left: 5%; */
+  text-align: center;
+  line-height: normal;
+}
+
+.title {
+  font-size: 55px;
+  font-family: 'Yeseva One', cursive;
+  margin-bottom: 0;
+}
+
+.desc {
+  font-size: 20px;
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #2D2424;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.buy {
+  margin: 3%;
+  color: #00A19D;
+}
+
+table{
+  margin: 5px 50px;
+  width: 80%;
+  align-items: center;
+  text-align: center;
+}
+
+td {
+    text-align: center;
+    padding: 3% 7%;
+}
+.mrp {
+  font-size: 50px;
+  font-family: 'Roboto', sans-serif;
+  color: #6ECB63;
+}
+.contact, .location {
+  font-size: 20px;
+}
+.contact{
+  text-align: left;
+}
+.location{
+  border: 1px solid yellow;
+}
+.wish {
+  text-align: center;
+  margin: 5%;
+  background-color: #FF5C58;
+}
+
+.head{
+  padding: 0 3%;
+}
+.head:hover{
+  text-decoration: none;
+}

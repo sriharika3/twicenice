@@ -6,9 +6,12 @@ const User = require('./model/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const fs = require('fs');
+const circularJSON = require('flatted')
 const bookModel = require('./model/book');
+const wishlistModel = require('./model/wishlist')
 
 const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhfjk'
+const ADMIN_P = "admin123"
 var token;
 var userLogged = false;
 mongoose.connect('mongodb://localhost:27017/login-app-db', {
@@ -73,8 +76,10 @@ app.get('/uploadBook', (req, res) => {
 	});
 });
 
+
 app.get('/admin', function(req, res){
-	bookModel.find({status:"false" }, (err, items) => {
+
+	bookModel.find({status:"false"}, (err, items) => {
 			if (err) {
 					console.log(err);
 					res.status(500).send('An error occurred', err);
@@ -84,6 +89,18 @@ app.get('/admin', function(req, res){
 			}
 	});
 	//res.render("admin");
+});
+
+app.post('/api/admin-login', async (req, res) => {
+	const { username, password } = req.body
+	//const user = await User.findOne({ username }).lean()
+
+	if (username === "admin" && password === ADMIN_P) {
+		return res.json({ status: 'ok', data: token })
+	}else{
+		return res.json({ status: 'error', error: 'Invalid username/password' })
+	}
+	//res.json({ status: 'error', error: 'Invalid username/password' })
 });
 
 app.get('/upload-status', function(req, res){
@@ -181,8 +198,10 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
 			category: req.body.category,
 			phone: req.body.phone,
 			email: req.body.email,
+			description: req.body.desc,
 			status: "false",
 			sold: false,
+			city: req.body.city,
 			sellerId: username,
         img: {
             data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
@@ -194,7 +213,7 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
             console.log(err);
         }
         else {
-             item.save();
+            item.save();
             res.redirect('/sellpage');
         }
     });
@@ -204,6 +223,7 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
 
 app.get("/logout",function(req,res){
 	userLogged=false;
+	//global.window.localStorage.clear();
 	console.log("Logged out!!");
 	res.redirect("/");
 });
@@ -247,6 +267,7 @@ app.post('/api/login', async (req, res) => {
 	res.json({ status: 'error', error: 'Invalid username/password' })
 });
 
+
 app.post('/api/register', async (req, res) => {
   console.log(req.body);
 	const {name, username, password: plainTextPassword } = req.body
@@ -289,8 +310,22 @@ app.post('/api/register', async (req, res) => {
 
 
 
+app.get('/cate',function(req,res){
+	res.render("categories2")
+})
 
-
+app.post('/search', function(req,res){
+	const ip = req.body.isbn
+	bookModel.find({$or: [{isbn: ip}, {title: ip}, {author: ip}, {category: ip}], status:"true", sold:"false"}, (err, items) => {
+			if (err) {
+					console.log(err);
+					res.status(500).send('An error occurred', err);
+			}
+			else {
+					res.render("categories", {catSelected: "ALL", items:items});
+			}
+	});
+})
 
 
 app.listen(3000,function(){

@@ -22,8 +22,37 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </head>
-
 <body>
+
+  <div class="modal fade" id="exampleModalCenterLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <form id="log-form">
+            <div class="form-group">
+              <input type="email" class="form-control" name="username" id="usernameL" placeholder="Your email address...">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" name="password" id="passwordL" placeholder="Your password...">
+            </div>
+            <!-- <button type="button" class="btn btn-info btn-block btn-round">Login</button> -->
+            <div class="modal-footer">
+              <!-- <p>Not a member yet? then,<button class="btn btn-link" data-target="#exampleModalCenterRegister">Register youself here.</button></p> -->
+              <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+              <button type="button" onclick="login()" class="btn btn-info">Login</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 
   <h1>TwiceNice Admin</h1>
@@ -64,5 +93,46 @@
 </form> -->
 
 </body>
+
+<script type="text/javascript">
+    $(window).on('load', function() {
+        $('#exampleModalCenterLogin').modal('show');
+    });
+    $('#exampleModalCenterLogin').modal({backdrop: 'static', keyboard: false})
+
+    function login(){
+      //alert("login Initiated");
+      const form = document.getElementById('log-form')
+    form.addEventListener('submit', loginUser(event));
+  }
+
+    async function loginUser(event) {
+      event.preventDefault()
+      const username = document.getElementById('usernameL').value
+      const password = document.getElementById('passwordL').value
+
+      const result = await fetch('/api/admin-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      }).then((res) => res.json())
+
+      if (result.status === 'ok') {
+        // everythign went fine
+        //console.log('Got the token: ', result.data)
+        //localStorage.setItem('token', result.data)
+        alert('Success')
+        $('#exampleModalCenterLogin').modal('hide');
+        //window.location = "http://localhost:3000";
+      } else {
+        alert(result.error)
+      }
+    }
+</script>
 
 </html>
