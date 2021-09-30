@@ -4,10 +4,12 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const User = require('./model/user')
 const bcrypt = require('bcryptjs')
+const moment = require('moment')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
 var multer = require('multer')
-const circularJSON = require('flatted')
+const _ = require('lodash');
+// const circularJSON = require('flatted')
 const bookModel = require('./model/book');
 const wishlistModel = require('./model/wishlist')
 
@@ -123,16 +125,17 @@ app.get('/upload-status', function(req, res){
 });
 
 app.post('/adminconfirm', function(req,res){
-	console.log(req.body.button);
+	console.log(req.body);
 	const len = Number(req.body.button);
 	const options = req.body;
 	for(var i=0;i<len;i++){
 		var op = "ans"+(i);
 		var isbn = "isbn"+(i);
+		var seller = "seller"+(i);
 		console.log(options[isbn]+"  "+options[op]);
 		if(options[op] == 1){
 			var update = { $set: {status: "true"} };
-			bookModel.updateOne({isbn:options[isbn]}, update, (err,items)=>{
+			bookModel.updateOne({isbn:options[isbn], sellerId: options[seller]}, update, (err,items)=>{
 				if(err){
 					console.log(err);
 					res.status(500).send("An error occurred",err);
@@ -166,7 +169,7 @@ app.post('/adminconfirm', function(req,res){
 					res.render('admin', { items: items });
 			}
 	});
-	//res.send(req.body);
+	res.redirect("/");
 });
 
 app.post('/sold', async(req,res) =>{
@@ -195,6 +198,8 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
 	const username = user.username
 	console.log("username loggedin = "+ username);
 	console.log(req.body);
+	const date = moment().format("MMM Do YY")
+	//res.send(date)
     var obj = {
 			isbn: req.body.isbn,
 			title: req.body.title,
@@ -208,6 +213,7 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
 			sold: false,
 			city: req.body.city,
 			sellerId: username,
+			date:date,
         img: {
             data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
             contentType: 'image/png'
@@ -223,7 +229,6 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
         }
     });
 });
-
 
 app.post('/api/wishlist', upload.single('image'), async (req, res) => {
   console.log(req.body);
@@ -315,18 +320,26 @@ app.get("/logout",function(req,res){
 	res.redirect("/");
 });
 
-app.get("/categories/:topic", function(req,res){
-  let cat = req.params.topic;
-	bookModel.find({status:"true", category:cat, sold: false}, (err, items) => {
-			if (err) {
-					console.log(err);
-					res.status(500).send('An error occurred', err);
-			}
-			else {
-				// res.send(items);
-					res.render("categories", {catSelected: cat, items:items});
-			}
-	});
+app.get("/categories/:topic", async (req,res)=> {
+	var logged
+	if(userLogged === false){
+		 logged = "no"
+		//return res.json({ status: 'error', error: 'notlogged' })
+	}else{
+		logged = "yes"
+	}
+		let cat = req.params.topic;
+		bookModel.find({status:"true", category:cat, sold: false}, (err, items) => {
+				if (err) {
+						console.log(err);
+						res.status(500).send('An error occurred', err);
+				}
+				else {
+					// res.send(items);
+						res.render("categories", {catSelected: cat, items:items, logged: logged});
+				}
+		});
+
 });
 
 
@@ -415,6 +428,12 @@ app.get('/wishlist', function(req,res){
 })
 
 app.post('/search', function(req,res){
+	var logged
+	if(userLogged === false){
+		logged = "no"
+	}else{
+		logged = "yes"
+	}
 	const ip = req.body.isbn
 	bookModel.find({$or: [{isbn: ip}, {title: ip}, {author: ip}, {category: ip}], status:"true", sold:"false"}, (err, items) => {
 			if (err) {
@@ -422,10 +441,11 @@ app.post('/search', function(req,res){
 					res.status(500).send('An error occurred', err);
 			}
 			else {
-					res.render("categories", {catSelected: "ALL", items:items});
+					res.render("categories", {catSelected: "ALL", items:items, logged:logged});
 			}
 	});
 })
+
 
 
 app.listen(3000,function(){

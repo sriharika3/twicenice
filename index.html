@@ -446,6 +446,8 @@
 				if (result.status === 'ok') {
 					// everythign went fine
 					alert('Success')
+          $('#exampleModalCenterRegister').modal('hide');
+          $('#exampleModalCenterLogin').modal('show');
 				} else {
 					alert(result.error)
 				}

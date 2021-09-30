@@ -13,6 +13,7 @@ var bookSchema = new mongoose.Schema({
     sellerId: String,
     description: String,
     city: String,
+    date: String,
     img:
     {
         data: Buffer,

@@ -31,8 +31,15 @@
     <h1><span class="badge badge-secondary">My Uploads</span></h1>
   <hr>
 
+
+  <% var i=0 %>
+  <% if(items.length <= 0){ %>
+    <br><br>
+    <h2>You haven't Uploaded any books Yet.</h2>
+<%  } else{%>
   <h2>Status of Books you Uploaded</h2>
-<div class="row container-fluid">
+  <div class="row container-fluid">
+
   <% var i=0 %>
 <% items.forEach(function(image) {  %>
 
@@ -48,6 +55,7 @@
     <p><i class="fas fa-mobile-alt icons"></i><%= image.phone %></p>
     <p><i class="fas fa-envelope icons"></i><%= image.email %></p>
     <p><i class="fas fa-quote-left icons"></i><%= image.category %></p>
+    <p class="isbn-text">Posted On: <%=image.date %></p>
     <h4>Status</h4>
     <input type="hidden" name="isbn<%=i%>" value=<%=image.isbn%> />
     <%if(image.status === "true" ){ %>
@@ -80,7 +88,7 @@
     <% i= i+1 %>
 
   </div>
-<% }) %>
+<% }) }%>
 </div>
 
   <!-- <form action="/adminconfirm" method="POST">

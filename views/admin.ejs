@@ -60,12 +60,17 @@
   <h1><span class="badge badge-secondary">Admin</span></h1>
 <hr>
 
-  <h2>Requests awaiting approval...</h2>
+<h2>Requests awaiting approval...</h2>
+
 
   <form action="/adminconfirm" method="post">
 
 <div class="row container-fluid">
   <% var i=0 %>
+  <% if(items.length <= 0){ %>
+    <h2>No Pending Requests</h2>
+
+<%  } else{%>
 <% items.forEach(function(image) {  %>
 
   <div class="card book-card col-lg-6">
@@ -80,8 +85,10 @@
     <p><i class="fas fa-mobile-alt icons"></i><%= image.phone %></p>
     <p><i class="fas fa-envelope icons"></i><%= image.email %></p>
     <p><i class="fas fa-quote-left icons"></i><%= image.category %></p>
+    <p class="isbn-text">Posted On: <%=image.date %></p>
     <h4>Status</h4>
     <input type="hidden" name="isbn<%=i%>" value=<%=image.isbn%> />
+    <input type="hidden" name="seller<%=i%>" value=<%=image.sellerId%> />
     <input type="radio" name="ans<%=i%>" value=1 />
     <label>Accept</label><br>
     <input type="radio" name="ans<%=i%>" value=0 />
@@ -90,10 +97,12 @@
     <% i= i+1 %>
 
   </div>
-<% }) %>
-</div>
+<% }) }%>
 
+</div>
 <button class="btn btn-info" type="submit" name="button" value=<%=i%> >Confirm</button>
+
+
 </form>
   <!-- <form action="/adminconfirm" method="POST">
 
