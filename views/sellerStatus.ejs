@@ -21,77 +21,89 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+  <!-- fontawesome-->
+	<script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
 </head>
 
 <body>
 
-
-  <h1>TwiceNice Seller</h1>
+    <a href="../"><i class="fas fa-chevron-circle-left fa-2x back-icon"></i></a>
+    <h1><span class="badge badge-secondary">My Uploads</span></h1>
   <hr>
+
   <h2>Status of Books you Uploaded</h2>
-    <% var i=0 %>
-  <% items.forEach(function(image) {  %>
+<div class="row container-fluid">
+  <% var i=0 %>
+<% items.forEach(function(image) {  %>
 
-    <div class="flex-container">
-
-
-  <div class="flex-child image">
-    <img class="req-img" src="data:image/<%=image.img.contentType%>;base64,
-         <%=image.img.data.toString('base64')%>" alt="request image">
-  </div>
-  <div class="flex-child desc">
-    <p>Title: <%= image.title %></p>
-    <p>Author:<%= image.author %></p>
-    <p>MRP:<%= image.mrp %></p>
-    <p>Contact number:<%= image.phone %></p>
-    <p>Email id:<%= image.email %></p>
-    <p>Category:<%= image.category %></p>
+  <div class="card book-card col-lg-6">
+  <img src="data:image/<%=image.img.contentType%>;base64,
+       <%=image.img.data.toString('base64')%>"  class="card-img-top req-img" alt="...">
+  <div class="card-body">
+    <h5 class="card-title"><%=image.title %></h5>
+    <p class="card-text"><%=image.description %></p>
+    <p class="isbn-text">ISBN: <%=image.isbn %></p>
+    <p style="text-transform: capitalize;"><i class="fas fa-quote-left icons"></i><%= image.author %></p>
+    <p><i class="fas fa-rupee-sign icons"></i><%= image.mrp %></p>
+    <p><i class="fas fa-mobile-alt icons"></i><%= image.phone %></p>
+    <p><i class="fas fa-envelope icons"></i><%= image.email %></p>
+    <p><i class="fas fa-quote-left icons"></i><%= image.category %></p>
     <h4>Status</h4>
     <input type="hidden" name="isbn<%=i%>" value=<%=image.isbn%> />
     <%if(image.status === "true" ){ %>
       <% if(image.sold === false){ %>
-      <h1 class="ac">Accepted!! </h1>
-      <h3>Congrats! your book is listed in our collections. Look out for orders from our active buyers</h3>
-      <form action="/sold" method="post">
-        <input type="hidden" name="isbn" value= <%=image.isbn%> />
-        <input type="submit" name="button" value="Mark Sold"/>
+      <h5 class="ac">Accepted!! </h5>
+      <h7>Congrats! your book is listed in our collections. Look out for orders from our active buyers</h7>
+      <form id="status-form">
+        <input type="hidden" name="isbn" id="isbn" value= <%=image.isbn%> />
+        <input type="hidden" name="user" id="seller" value= <%=user%> />
+        <!-- <button type="button" onclick="login()" class="btn btn-info">Login</button> -->
+        <!-- <% var iidd = "#sbtn"+image.isbn+user %>
+        <p> <%=iidd%><p> -->
+        <button type="button" onclick="sold()" class="btn btn-success" id="bstn" >Mark Sold</button>
       </form>
   <%  }else{ %>
-    <h1 class="ac">Sold!!</h1>
-    <h3>Hope you had a good experience with us.</h3>
-
+    <h5 class="ac">Sold!!</h5>
+    <h7>Hope you had a good experience with us.</h7>
   <% } %>
   <%  }else if(image.status === "reject"){ %>
-      <h1 class="wa">Rejected!! </h1>
-      <h3>Your Book probably has wrong information, you haven't uploaded a very clear image or your book might be not suitable for reuse</h3>
+      <h5 class="wa">Rejected!! </h5>
+      <h7>Your Book probably has wrong information, you haven't uploaded a very clear image or your book might be not suitable for reuse</h7>
   <%  }else{%>
-    <h1 class="wa">Waiting for approval.. </h1>
-    <h3>Please be patient while our team reviews your request.</h3>
+    <h5 class="wa">Waiting for approval.. </h5>
+    <h7>Please be patient while our team reviews your request.</h7>
 
 <%  } %>
+<!-- <p><a href="#" class="btn btn-success">Mark as sold</a></p> -->
 
   </div>
     <% i= i+1 %>
-</div>
+
+  </div>
 <% }) %>
+</div>
+
   <!-- <form action="/adminconfirm" method="POST">
 
 </form> -->
 
 </body>
 <script type="text/javascript">
-function wishlist(){
-const form = document.getElementById('book')
-form.addEventListener('submit', addToList(event));
+function sold(){
+// alert("in sold()");
+const form = document.getElementById('status-form');
+
+form.addEventListener('submit', markSold(event));
 }
 
-async function addToList(event) {
+async function markSold(event) {
+  // alert("in markSold()");
   event.preventDefault()
   const isbn = document.getElementById('isbn').value
   const seller = document.getElementById('seller').value
   // const userId = document.getElementById('user').value
 
-  const result = await fetch('/api/wishlist', {
+  const result = await fetch('/sold', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -105,12 +117,12 @@ async function addToList(event) {
 
   if (result.status === 'ok') {
     // everythign went fine
-    alert('Added books to wishlist')
-    $("#wish").removeClass("btn btn-info").addClass("btn btn-success");
-    $("#wish").text( 'Added');
-  } else if(result.status === 'notlogged'){
-    alert(result.error);
-    window.location = "http://localhost:3000/";
+
+    const bId = "sbtn"+isbn+seller
+    alert("Marked Sold");
+    // $(bId).removeClass("btn btn-info").addClass("btn btn-success");
+    // $(bId).text( 'Marked Sold');
+    window.location = "http://localhost:3000/upload-status";
   }else{
     alert(result.error);
   }

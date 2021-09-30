@@ -33,7 +33,7 @@
   <!-- collapse instructions -->
   <div class="sellpage-body">
     <button class="btn btn-collapse" type="button" data-toggle="collapse" data-target="#steps" aria-expanded="false" aria-controls="collapseExample">
-      The following are the steps to selling your books
+      The following are the steps to selling your books <i class="fas fa-caret-down"></i>
     </button>
     <div class="collapse" id="steps">
       <div class="card card-body">
@@ -50,21 +50,21 @@
     <br>
     <br>
     <button class="btn btn-collapse" type="button" data-toggle="collapse" data-target="#conditions" aria-expanded="false" aria-controls="collapseExample">
-      Conditions for the "Sell your books" program
+      Conditions for the "Sell your books" program <i class="fas fa-caret-down"></i>
     </button>
     <div class="collapse" id="conditions">
       <div class="card card-body">
         <ul>
           <li> We do not accept content that has been pirated, physically altered, or photocopied. We also do not accept workbooks, illegal sample material, registeres, or notebooks.</li>
-          <li> If you are unable to arrive at the pickup points, please reschedule the pickup 24 hours in advance; for missed pickup attempts, logistics charges will be deducted from the points.</li>
-          <!-- <li> The reward will be in the form of Bookchor Loyalty points; no cash will be provided for the books sold. (1 rupee = 2 points)</li>
-         -->
+          <li> Give the mobile number, email address that you use, so that the buyer can contact you. </li>
+          <li> If the book does not obligue to our policies, it would be rejected. </li>
+
         </ul>
       </div>
     </div>
     <br>
     <br>
-    <form action="/uploadBook" method="post" enctype="multipart/form-data">
+    <form action="/uploadBook" method="post" enctype="multipart/form-data" id="sell-form">
       <div class="form-group">
         <div class="input-group input-group-sm mb-3 text-input">
           <div class="input-group mb-3">
@@ -149,12 +149,19 @@
         <input type="file" class="form-control-file" name="image" id="Frontview" required>
         <br>
         <br>
-        <button type="submit" name="button">Submit</button>
+        <button type="submit" name="button" class="btn btn-info">Submit</button>
       </div>
     </form>
 
   </div>
   <p class=>© Copyright 2021 TwiceNice</p>
 </body>
-
+<script type="text/javascript">
+document.getElementById('sell-form').onsubmit = function () {
+    alert("Uploaded Sucessfully.");
+};
+  // function submitted(){
+  //   alert("Uploaded Sucessfully.");
+  // }
+</script>
 </html>

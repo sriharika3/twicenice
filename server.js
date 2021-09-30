@@ -5,7 +5,8 @@ const mongoose = require('mongoose')
 const User = require('./model/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const fs = require('fs');
+const fs = require('fs')
+var multer = require('multer')
 const circularJSON = require('flatted')
 const bookModel = require('./model/book');
 const wishlistModel = require('./model/wishlist')
@@ -14,6 +15,7 @@ const JWT_SECRET = 'sdjkfh8923yhjdksbfma@#*(&@*!^#&@bhjb2qiuhesdbhjdsfg839ujkdhf
 const ADMIN_P = "admin123"
 var token;
 var userLogged = false;
+
 mongoose.connect('mongodb://localhost:27017/login-app-db', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -40,18 +42,18 @@ app.get("/",function(req,res){
 }
 });
 
-app.get("/sellpage",function(req,res){
+app.get("/sellpage", async(req,res)=> {
 	if(userLogged == false){
-	//if(typeof token === 'undefined' && token) {
+	 //if(typeof token === 'undefined' && token) {
    // do something with token
    // this will only work if the token is set in the localStorage
 	 res.sendFile(__dirname+"/index.html");
  }else{
-	res.sendFile(__dirname+"/sellpage.html");
+	 res.sendFile(__dirname+"/sellpage.html");
 }
 });
 
-var multer = require('multer');
+
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -114,7 +116,7 @@ app.get('/upload-status', function(req, res){
 					res.status(500).send('An error occurred', err);
 			}
 			else {
-					res.render('sellerStatus', { items: items });
+					res.render('sellerStatus', { items: items, user:username });
 			}
 	});
 	//res.render("admin");
@@ -167,18 +169,21 @@ app.post('/adminconfirm', function(req,res){
 	//res.send(req.body);
 });
 
-app.post('/sold', function(req,res){
-	console.log(req.body.isbn);
+app.post('/sold', async(req,res) =>{
+	const user = jwt.verify(token, JWT_SECRET)
+	const _id = user.id
+	const username = user.username
+	// console.log(req.body.isbn);
 	var update = { $set: {sold: "true"} };
-	bookModel.updateOne({isbn:req.body.isbn}, update, (err,items)=>{
+	bookModel.updateOne({isbn:req.body.isbn, sellerId:username}, update, (err,items)=>{
 		if(err){
 			console.log(err);
 			res.status(500).send("An error occurred",err);
 		}else{
 			if(items){
-				console.log("Sold Updated");
+				return res.json({ status: 'ok', data: 'Marked Sold' })
 			}else{
-				console.log("Item not found!");
+				return res.json({ status: 'error', error: 'Item not found' })
 			}
 			}
 		});
@@ -220,6 +225,88 @@ app.post('/uploadBook', upload.single('image'), (req, res, next) => {
 });
 
 
+app.post('/api/wishlist', upload.single('image'), async (req, res) => {
+  console.log(req.body);
+	const {isbn, sellerId } = req.body
+	const user = jwt.verify(token, JWT_SECRET)
+	const _id = user.id
+	const username = user.username
+	const items= await bookModel.findOne({isbn:isbn}).lean()
+
+				if(items){
+					console.log(items);
+					const isbn = items.isbn
+					const title = items.title
+					const author =  items.author
+					const mrp =  items.mrp
+					const category =  items.category
+					const phone =  items.phone
+					const email =  items.email
+					const description =  items.desc
+					const status =  "true"
+					const sold = false
+					const city = items.city
+					const seller = sellerId
+					const userL = username
+					const	img = items.img
+					console.log("isbn="+isbn);
+					console.log("title="+title);
+					var obj = {
+						isbn: isbn,
+						title: title,
+						author: author,
+						mrp: mrp,
+						category: category,
+						phone: phone,
+						email: email,
+						description: description,
+						status: status,
+						sold: sold,
+						city: city,
+						sellerId: seller,
+						username: userL,
+							img: {
+								data: img.data,
+								contentType: img.contentType
+							}
+					}
+					wishlistModel.create(obj, (error, book) => {
+							if (error) {
+									console.log(error);
+									return res.json({ status: 'error', error: 'Some error occured at create.' })
+
+							}
+							else {
+									book.save();
+									return res.json({ status: 'ok', data: 'Success' })
+							}
+					});
+					//res.json({ status: 'ok' })
+				}else{
+					return res.json({ status: 'error', error: 'Some error occured due to no Items.' })
+
+				}
+			 //res.render("categories", {catSelected: cat, items:items});
+	// });
+
+	// try {
+	// 	const response = await wishlistModel.create({
+	// 		isdn,
+	// 		sellerId
+	// 	})
+	// 	console.log('User created successfully: ', response)
+	// 	//res.sendFile(__dirname+"/index.html");
+	// } catch (error) {
+	// 	if (error.code === 11000) {
+	// 		// duplicate key
+	// 		return res.json({ status: 'error', error: 'Username already in use' })
+	// 	}
+	// 	throw error
+	// }
+	 //res.json({ status: 'ok' })
+});
+
+
 
 app.get("/logout",function(req,res){
 	userLogged=false;
@@ -236,6 +323,7 @@ app.get("/categories/:topic", function(req,res){
 					res.status(500).send('An error occurred', err);
 			}
 			else {
+				// res.send(items);
 					res.render("categories", {catSelected: cat, items:items});
 			}
 	});
@@ -309,9 +397,21 @@ app.post('/api/register', async (req, res) => {
 });
 
 
+app.get('/wishlist', function(req,res){
+	const user = jwt.verify(token, JWT_SECRET)
+	const _id = user.id
+	const username = user.username
+	wishlistModel.find({status:"true", sold: false}, (err, items) => {
+			if (err) {
+					console.log(err);
+					res.status(500).send('An error occurred', err);
+			}
+			else {
+					// res.send(items);
+					res.render("categories", {catSelected: "ALL", items:items});
 
-app.get('/cate',function(req,res){
-	res.render("categories2")
+			}
+	});
 })
 
 app.post('/search', function(req,res){
