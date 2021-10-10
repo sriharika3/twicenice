@@ -18,7 +18,7 @@ const ADMIN_P = "admin123"
 var token;
 var userLogged = false;
 
-mongoose.connect('mongodb://localhost:27017/login-app-db', {
+mongoose.connect('mongodb+srv://admin-harika:test123@cluster0.rbcfr.mongodb.net/login-app-db', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	// useCreateIndex: true
